@@ -1,7 +1,5 @@
 package com.ffcs.demo.controller;
 
-import com.alipay.api.AlipayApiException;
-import com.ffcs.demo.domain.AlipayBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;

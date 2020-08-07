@@ -1,4 +1,4 @@
-package com.ffcs.demo.util.alipay;
+package com.ffcs.demo.utils.alipay;
 
 import java.io.FileWriter;
 import java.io.IOException;

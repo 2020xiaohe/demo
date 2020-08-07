@@ -8,7 +8,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.ffcs.demo.domain.AlipayBean;
 import com.ffcs.demo.service.AlipayService;
-import com.ffcs.demo.util.alipay.AlipayConfig;
+import com.ffcs.demo.utils.alipay.AlipayConfig;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
