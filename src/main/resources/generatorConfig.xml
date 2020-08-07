@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 引入配置文件 -->
+    <properties resource="generator.properties" />
+    <!-- 数据库驱动 -->
+    <classPathEntry location="${config_location}" />
+    <context targetRuntime="MyBatis3" id="DB2Tables">
+        <commentGenerator>
+            <!-- 是否生成注释代时间戳 -->
+            <property value="true" name="suppressDate" />
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property value="true" name="suppressAllComments" />
+        </commentGenerator>
+        <!--数据库链接URL，用户名、密码 -->
+        <jdbcConnection password="${config_password}" userId="${config_userId}"
+                        connectionURL="${config_connection_url}" driverClass="${config_driver_class}">
+        </jdbcConnection>
+        <javaTypeResolver>
+
+            <property value="false" name="forceBigDecimals" />
+
+        </javaTypeResolver>
+
+        <!-- 生成模型的包名和位置 -->
+
+
+        <!-- 要修改1次 -->
+
+
+        <!-- 生成实体类地址 -->
+
+
+
+        <javaModelGenerator targetProject="${config_targetProject}"
+                            targetPackage="${config_model_generator}">
+
+            <property value="true" name="enableSubPackages" />
+
+            <property value="true" name="trimStrings" />
+
+        </javaModelGenerator>
+
+        <!-- 生成映射文件的包名和位置 -->
+
+
+        <!-- 要修改1次 -->
+
+
+        <!-- 生成map xml文件 -->
+
+
+
+        <sqlMapGenerator targetProject="${config_targetProject}"
+                         targetPackage="${config_map_generator}">
+
+            <property value="true" name="enableSubPackages" />
+
+        </sqlMapGenerator>
+
+        <!-- 生成DAO的包名和位置 -->
+
+
+        <!-- 要修改1次 -->
+
+
+        <!-- 生成mapxml对应client，也就是接口dao -->
+
+
+
+        <javaClientGenerator targetProject="${config_targetProject}"
+                             targetPackage="${config_client_generator}" type="XMLMAPPER">
+
+            <property value="true" name="enableSubPackages" />
+
+        </javaClientGenerator>
+
+        <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名 -->
+
+
+        <!-- 每次生成都要修改 -->
+
+
+
+        <table selectByExampleQueryId="false" enableSelectByExample="false"
+               enableDeleteByExample="false" enableUpdateByExample="false"
+               enableCountByExample="false" domainObjectName="${config_Object_name}"
+               tableName="${config_table_name}">
+
+            <!-- 设置实体类属性名称与数据表字段相同,否则驼峰展现 -->
+
+
+            <property value="false" name="useActualColumnNames" />
+
+        </table>
+
+    </context>
+
+</generatorConfiguration>
