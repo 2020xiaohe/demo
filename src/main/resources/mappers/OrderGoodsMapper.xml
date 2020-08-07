@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffcs.demo.dao.mapper.OrderGoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.ffcs.demo.entity.OrderGoods" >
+    <result column="order_goods_id" property="orderGoodsId" jdbcType="INTEGER" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="goods_count" property="goodsCount" jdbcType="INTEGER" />
+    <result column="goods_per_price" property="goodsPerPrice" jdbcType="DECIMAL" />
+    <result column="goodes_total_price" property="goodesTotalPrice" jdbcType="DECIMAL" />
+    <result column="goods_content" property="goodsContent" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="opr_id" property="oprId" jdbcType="INTEGER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.ffcs.demo.entity.OrderGoods" >
+    insert into order_goods (order_goods_id, order_no, goods_id, 
+      goods_count, goods_per_price, goodes_total_price, 
+      goods_content, create_time, opr_id
+      )
+    values (#{orderGoodsId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, 
+      #{goodsCount,jdbcType=INTEGER}, #{goodsPerPrice,jdbcType=DECIMAL}, #{goodesTotalPrice,jdbcType=DECIMAL}, 
+      #{goodsContent,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{oprId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ffcs.demo.entity.OrderGoods" >
+    insert into order_goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderGoodsId != null" >
+        order_goods_id,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsCount != null" >
+        goods_count,
+      </if>
+      <if test="goodsPerPrice != null" >
+        goods_per_price,
+      </if>
+      <if test="goodesTotalPrice != null" >
+        goodes_total_price,
+      </if>
+      <if test="goodsContent != null" >
+        goods_content,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="oprId != null" >
+        opr_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderGoodsId != null" >
+        #{orderGoodsId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCount != null" >
+        #{goodsCount,jdbcType=INTEGER},
+      </if>
+      <if test="goodsPerPrice != null" >
+        #{goodsPerPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodesTotalPrice != null" >
+        #{goodesTotalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsContent != null" >
+        #{goodsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oprId != null" >
+        #{oprId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

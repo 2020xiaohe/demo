@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffcs.demo.dao.mapper.CartMapper" >
+  <resultMap id="BaseResultMap" type="com.ffcs.demo.entity.Cart" >
+    <result column="cart_id" property="cartId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="opr_date" property="oprDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectByUserId" resultType="java.util.HashMap" parameterType="java.lang.Integer">
+    select c.*,g.* from cart c
+    left join goods_info g on g.goods_id = c.goods_id
+    where  c.user_id =#{userId}
+  </select>
+
+  <insert id="insert" parameterType="com.ffcs.demo.entity.Cart" >
+    insert into cart (cart_id, user_id, goods_id, 
+      count, opr_date)
+    values (#{cartId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, 
+      #{count,jdbcType=INTEGER}, now())
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ffcs.demo.entity.Cart" >
+    insert into cart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cartId != null" >
+        cart_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="oprDate != null" >
+        opr_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cartId != null" >
+        #{cartId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+        oprDate=now(),
+    </trim>
+  </insert>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cart
+    where cart_id = #{cartId,jdbcType=INTEGER}
+  </delete>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffcs.demo.entity.Cart" >
+    update cart
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId},
+      </if>
+      <if test="goodsId != null" >
+        goods_id = #{goodsId},
+      </if>
+      <if test="count != null" >
+        count = #{count},
+      </if>
+      <if test="oprDate != null" >
+        oprDate = #{oprDate},
+      </if>
+
+    </set>
+    where cart_id = #{cartId}
+  </update>
+</mapper>
