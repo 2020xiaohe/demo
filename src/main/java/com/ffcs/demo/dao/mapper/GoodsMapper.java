@@ -1,7 +1,12 @@
 package com.ffcs.demo.dao.mapper;
 
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
 import com.ffcs.demo.entity.Goods;
 
+@Repository
 public interface GoodsMapper {
     int deleteByPrimaryKey(Integer goodsId);
 
@@ -14,4 +19,6 @@ public interface GoodsMapper {
     int updateByPrimaryKeySelective(Goods record);
 
     int updateByPrimaryKey(Goods record);
+
+    List<Goods> selectALL();
 }

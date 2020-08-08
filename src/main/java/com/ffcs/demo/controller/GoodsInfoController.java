@@ -3,8 +3,12 @@ package com.ffcs.demo.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.demo.constant.OperResult;
 import com.ffcs.demo.domain.GoodsInfo;
+import com.ffcs.demo.entity.Goods;
 import com.ffcs.demo.service.GoodsInfoService;
 import com.ffcs.demo.utils.PicUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +104,30 @@ public class GoodsInfoController {
             }
         }
         json.put("goodsInfo",list);
+        json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        return  json.toString();
+    }
+
+    /**
+     * 商品管理---获取所有商品--分页
+     * zhuwb 20200808
+     * @return
+     */
+    @GetMapping("/getPageAllGoodsInfo")
+    public String  getPageAllGoods(int pageNum, int pageSize){
+        JSONObject json= new JSONObject();
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<Goods> pageInfo = new PageInfo<>(goodsInfoService.getPageALL());
+        for (Goods g : pageInfo.getList() ) {
+            if (g.getStatus() == 1){
+                g.setStatusDesc("正常");
+            }else if (g.getStatus() == 2){
+                g.setStatusDesc("缺货");
+            }else {
+                g.setStatusDesc("下架");
+            }
+        }
+        json.put("goodsInfo",pageInfo);
         json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
         return  json.toString();
     }

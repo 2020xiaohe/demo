@@ -139,4 +139,7 @@
       opr_id = #{oprId,jdbcType=INTEGER}
     where order_goods_id = #{orderGoodsId,jdbcType=INTEGER}
   </update>
+  <select id="getOrderGoods" resultMap="BaseResultMap">
+    select * from order_goods where order_no = #{orderNo}
+  </select>
 </mapper>

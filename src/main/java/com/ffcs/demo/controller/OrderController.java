@@ -1,16 +1,26 @@
 package com.ffcs.demo.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
+import com.ffcs.demo.constant.OperResult;
 import com.ffcs.demo.domain.AlipayBean;
 import com.ffcs.demo.entity.Cart;
+import com.ffcs.demo.entity.Goods;
 import com.ffcs.demo.entity.Order;
+import com.ffcs.demo.entity.OrderGoods;
 import com.ffcs.demo.req.AlipayReq;
 import com.ffcs.demo.service.AlipayService;
 import com.ffcs.demo.service.CartService;
 import com.ffcs.demo.service.OrderService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,6 +30,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/order")
 public class OrderController {
+    private Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
     private AlipayService alipayService;
@@ -67,6 +78,43 @@ public class OrderController {
         for (Cart cart : cartList) {
             cartService.del(cart.getCartId());
         }
+    }
+
+    /**
+     * 查询所有订单--分页
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/getPageAllOrderInfo")
+    @ResponseBody
+    public String getPageAllOrder(int pageNum, int pageSize){
+        JSONObject json= new JSONObject();
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<Order> pageInfo = new PageInfo<>(orderService.getAll());
+        for (Order g : pageInfo.getList() ) {
+            switch (g.getOrderStatus()){
+                case 1:{g.setStatusDesc("进行中"); break;}
+                case 2:{g.setStatusDesc("取消");break;}
+                case 3:{g.setStatusDesc("完成");break;}
+                case 4:{g.setStatusDesc("退款中");break;}
+                case 5:{g.setStatusDesc("退款失败");break;}
+                case 6:{g.setStatusDesc("退款完成");break;}
+            }
+        }
+        json.put("ordersInfo",pageInfo);
+        json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        return json.toJSONString();
+    }
+
+    @GetMapping("/getOrderGoods")
+    @ResponseBody
+    public String getOrderGoods(int orderNo){
+        JSONObject json= new JSONObject();
+        List<OrderGoods> orderGoods = orderService.getOrderGoods(orderNo);
+        json.put("orderGoods",orderGoods);
+        json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        return json.toJSONString();
     }
 }
 

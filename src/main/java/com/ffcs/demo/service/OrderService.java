@@ -1,6 +1,7 @@
 package com.ffcs.demo.service;
 
 import com.ffcs.demo.entity.Order;
+import com.ffcs.demo.entity.OrderGoods;
 
 import java.util.List;
 
@@ -13,4 +14,7 @@ public interface OrderService {
 
     public List<Order> select(Order order);
 
+    public List<Order> getAll();
+
+    List<OrderGoods> getOrderGoods(int orderNo);
 }

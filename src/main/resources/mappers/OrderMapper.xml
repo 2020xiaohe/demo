@@ -151,4 +151,8 @@
       remark = #{remark,jdbcType=VARCHAR}
     where order_id = #{orderId,jdbcType=INTEGER}
   </update>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from order_info
+  </select>
 </mapper>

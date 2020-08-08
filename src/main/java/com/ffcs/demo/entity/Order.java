@@ -10,6 +10,8 @@ public class Order {
 
     private Integer orderStatus;
 
+    private String StatusDesc;
+
     private Integer buyerId;
 
     private BigDecimal price;
@@ -102,5 +104,13 @@ public class Order {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getStatusDesc() {
+        return StatusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        StatusDesc = statusDesc;
     }
 }

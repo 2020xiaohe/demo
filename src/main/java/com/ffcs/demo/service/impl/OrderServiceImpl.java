@@ -1,7 +1,9 @@
 package com.ffcs.demo.service.impl;
 
+import com.ffcs.demo.dao.mapper.OrderGoodsMapper;
 import com.ffcs.demo.dao.mapper.OrderMapper;
 import com.ffcs.demo.entity.Order;
+import com.ffcs.demo.entity.OrderGoods;
 import com.ffcs.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     private OrderMapper orderInfoMapper;
+
+    @Autowired
+    private OrderGoodsMapper orderGoodsMapper;
 
     @Override
     /**
@@ -51,5 +56,15 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public List<Order> select(Order order) {
         return orderInfoMapper.select(order);
+    }
+
+    @Override
+    public List<Order> getAll() {
+        return orderInfoMapper.getAll();
+    }
+
+    @Override
+    public List<OrderGoods> getOrderGoods(int orderNo) {
+        return orderGoodsMapper.getOrderGoods(orderNo);
     }
 }

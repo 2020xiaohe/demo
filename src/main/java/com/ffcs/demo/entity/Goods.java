@@ -24,6 +24,8 @@ public class Goods {
 
     private Integer status;
 
+    private String StatusDesc;
+
     private Integer oprId;
 
     private Date oprDate;
@@ -106,6 +108,14 @@ public class Goods {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getStatusDesc() {
+        return StatusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        StatusDesc = statusDesc;
     }
 
     public Integer getOprId() {
