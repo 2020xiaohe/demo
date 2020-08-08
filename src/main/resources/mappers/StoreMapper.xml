@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffcs.demo.dao.mapper.StoreMapper" >
+  <resultMap id="BaseResultMap" type="com.ffcs.demo.entity.Store" >
+    <id column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="store_name" property="storeName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="Longitude" property="longitude" jdbcType="VARCHAR" />
+    <result column="Latitude" property="latitude" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="business_province" property="businessProvince" jdbcType="VARCHAR" />
+    <result column="business_city" property="businessCity" jdbcType="VARCHAR" />
+    <result column="business_area" property="businessArea" jdbcType="VARCHAR" />
+    <result column="credit" property="credit" jdbcType="INTEGER" />
+    <result column="order_count" property="orderCount" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="opr_id" property="oprId" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="opr_date" property="oprDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    store_id, store_name, status, phone, Longitude, Latitude, address, email, business_province, 
+    business_city, business_area, credit, order_count, remark, opr_id, create_date, opr_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from store_info
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from store_info
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ffcs.demo.entity.Store" >
+    insert into store_info (store_id, store_name, status, 
+      phone, Longitude, Latitude, 
+      address, email, business_province, 
+      business_city, business_area, credit, 
+      order_count, remark, opr_id, 
+      create_date, opr_date)
+    values (#{storeId,jdbcType=INTEGER}, #{storeName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{phone,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{businessProvince,jdbcType=VARCHAR}, 
+      #{businessCity,jdbcType=VARCHAR}, #{businessArea,jdbcType=VARCHAR}, #{credit,jdbcType=INTEGER}, 
+      #{orderCount,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{oprId,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{oprDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ffcs.demo.entity.Store" >
+    insert into store_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="storeName != null" >
+        store_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="longitude != null" >
+        Longitude,
+      </if>
+      <if test="latitude != null" >
+        Latitude,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="businessProvince != null" >
+        business_province,
+      </if>
+      <if test="businessCity != null" >
+        business_city,
+      </if>
+      <if test="businessArea != null" >
+        business_area,
+      </if>
+      <if test="credit != null" >
+        credit,
+      </if>
+      <if test="orderCount != null" >
+        order_count,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="oprId != null" >
+        opr_id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="oprDate != null" >
+        opr_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="storeName != null" >
+        #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="businessProvince != null" >
+        #{businessProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="businessCity != null" >
+        #{businessCity,jdbcType=VARCHAR},
+      </if>
+      <if test="businessArea != null" >
+        #{businessArea,jdbcType=VARCHAR},
+      </if>
+      <if test="credit != null" >
+        #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="orderCount != null" >
+        #{orderCount,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="oprId != null" >
+        #{oprId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oprDate != null" >
+        #{oprDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffcs.demo.entity.Store" >
+    update store_info
+    <set >
+      <if test="storeName != null" >
+        store_name = #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        Longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        Latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="businessProvince != null" >
+        business_province = #{businessProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="businessCity != null" >
+        business_city = #{businessCity,jdbcType=VARCHAR},
+      </if>
+      <if test="businessArea != null" >
+        business_area = #{businessArea,jdbcType=VARCHAR},
+      </if>
+      <if test="credit != null" >
+        credit = #{credit,jdbcType=INTEGER},
+      </if>
+      <if test="orderCount != null" >
+        order_count = #{orderCount,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="oprId != null" >
+        opr_id = #{oprId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oprDate != null" >
+        opr_date = #{oprDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ffcs.demo.entity.Store" >
+    update store_info
+    set store_name = #{storeName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      phone = #{phone,jdbcType=VARCHAR},
+      Longitude = #{longitude,jdbcType=VARCHAR},
+      Latitude = #{latitude,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      business_province = #{businessProvince,jdbcType=VARCHAR},
+      business_city = #{businessCity,jdbcType=VARCHAR},
+      business_area = #{businessArea,jdbcType=VARCHAR},
+      credit = #{credit,jdbcType=INTEGER},
+      order_count = #{orderCount,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      opr_id = #{oprId,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      opr_date = #{oprDate,jdbcType=TIMESTAMP}
+    where store_id = #{storeId,jdbcType=INTEGER}
+  </update>
+</mapper>

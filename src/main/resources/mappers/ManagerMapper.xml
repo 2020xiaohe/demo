@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffcs.demo.dao.mapper.ManagerMapper" >
+  <resultMap id="BaseResultMap" type="com.ffcs.demo.entity.Manager" >
+    <id column="manager_id" property="managerId" jdbcType="INTEGER" />
+    <result column="manager_login_name" property="managerLoginName" jdbcType="VARCHAR" />
+    <result column="manager_pwd" property="managerPwd" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="opr_id" property="oprId" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="opr_date" property="oprDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    manager_id, manager_login_name, manager_pwd, account, email, status, opr_id, create_date, 
+    opr_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from manager_info
+    where manager_id = #{managerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from manager_info
+    where manager_id = #{managerId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ffcs.demo.entity.Manager" >
+    insert into manager_info (manager_id, manager_login_name, manager_pwd, 
+      account, email, status, 
+      opr_id, create_date, opr_date
+      )
+    values (#{managerId,jdbcType=INTEGER}, #{managerLoginName,jdbcType=VARCHAR}, #{managerPwd,jdbcType=VARCHAR}, 
+      #{account,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{oprId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{oprDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ffcs.demo.entity.Manager" >
+    insert into manager_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="managerId != null" >
+        manager_id,
+      </if>
+      <if test="managerLoginName != null" >
+        manager_login_name,
+      </if>
+      <if test="managerPwd != null" >
+        manager_pwd,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="oprId != null" >
+        opr_id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="oprDate != null" >
+        opr_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="managerId != null" >
+        #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="managerLoginName != null" >
+        #{managerLoginName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPwd != null" >
+        #{managerPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="oprId != null" >
+        #{oprId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oprDate != null" >
+        #{oprDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffcs.demo.entity.Manager" >
+    update manager_info
+    <set >
+      <if test="managerLoginName != null" >
+        manager_login_name = #{managerLoginName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPwd != null" >
+        manager_pwd = #{managerPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="oprId != null" >
+        opr_id = #{oprId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oprDate != null" >
+        opr_date = #{oprDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where manager_id = #{managerId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ffcs.demo.entity.Manager" >
+    update manager_info
+    set manager_login_name = #{managerLoginName,jdbcType=VARCHAR},
+      manager_pwd = #{managerPwd,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      opr_id = #{oprId,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      opr_date = #{oprDate,jdbcType=TIMESTAMP}
+    where manager_id = #{managerId,jdbcType=INTEGER}
+  </update>
+</mapper>

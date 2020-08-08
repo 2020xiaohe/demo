@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffcs.demo.dao.mapper.OrderRecieveMapper" >
+  <resultMap id="BaseResultMap" type="com.ffcs.demo.entity.OrderRecieve" >
+    <id column="order_recieve _Id" property="orderRecieveId" jdbcType="INTEGER" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="receive_user_id" property="receiveUserId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="opr_id" property="oprId" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="opr_date" property="oprDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    "order_recieve _Id", order_no, receive_user_id, goods_id, total_price, status, opr_id, 
+    create_date, opr_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from order_recieve
+    where "order_recieve _Id" = #{orderRecieveId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from order_recieve
+    where "order_recieve _Id" = #{orderRecieveId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ffcs.demo.entity.OrderRecieve" >
+    insert into order_recieve ("order_recieve _Id", order_no, receive_user_id, 
+      goods_id, total_price, status, 
+      opr_id, create_date, opr_date
+      )
+    values (#{orderRecieveId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{receiveUserId,jdbcType=INTEGER}, 
+      #{goodsId,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
+      #{oprId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{oprDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ffcs.demo.entity.OrderRecieve" >
+    insert into order_recieve
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderRecieveId != null" >
+        "order_recieve _Id",
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="receiveUserId != null" >
+        receive_user_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="oprId != null" >
+        opr_id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="oprDate != null" >
+        opr_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderRecieveId != null" >
+        #{orderRecieveId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveUserId != null" >
+        #{receiveUserId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="oprId != null" >
+        #{oprId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oprDate != null" >
+        #{oprDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffcs.demo.entity.OrderRecieve" >
+    update order_recieve
+    <set >
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="receiveUserId != null" >
+        receive_user_id = #{receiveUserId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="oprId != null" >
+        opr_id = #{oprId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oprDate != null" >
+        opr_date = #{oprDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where "order_recieve _Id" = #{orderRecieveId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ffcs.demo.entity.OrderRecieve" >
+    update order_recieve
+    set order_no = #{orderNo,jdbcType=VARCHAR},
+      receive_user_id = #{receiveUserId,jdbcType=INTEGER},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
+      status = #{status,jdbcType=INTEGER},
+      opr_id = #{oprId,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      opr_date = #{oprDate,jdbcType=TIMESTAMP}
+    where "order_recieve _Id" = #{orderRecieveId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -3,7 +3,7 @@ package com.ffcs.demo.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class GoodsInfo {
+public class Goods {
     private Integer goodsId;
 
     private String goodsName;

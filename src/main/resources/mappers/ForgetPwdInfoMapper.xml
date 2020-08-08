@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffcs.demo.dao.mapper.ForgetPwdInfoMapper">
+  <resultMap id="BaseResultMap" type="com.ffcs.demo.entity.ForgetPwdInfo">
+    <id column="password_id" jdbcType="INTEGER" property="passwordId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="question_1" jdbcType="VARCHAR" property="question1" />
+    <result column="question_2" jdbcType="VARCHAR" property="question2" />
+    <result column="answer_1" jdbcType="VARCHAR" property="answer1" />
+    <result column="answer_2" jdbcType="VARCHAR" property="answer2" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    password_id, user_id, question_1, question_2, answer_1, answer_2, user_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forget_pwd_info
+    where password_id = #{passwordId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from forget_pwd_info
+    where password_id = #{passwordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ffcs.demo.entity.ForgetPwdInfo">
+    insert into forget_pwd_info (password_id, user_id, question_1, 
+      question_2, answer_1, answer_2, 
+      user_type)
+    values (#{passwordId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{question1,jdbcType=VARCHAR}, 
+      #{question2,jdbcType=VARCHAR}, #{answer1,jdbcType=VARCHAR}, #{answer2,jdbcType=VARCHAR}, 
+      #{userType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ffcs.demo.entity.ForgetPwdInfo">
+    insert into forget_pwd_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="passwordId != null">
+        password_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="question1 != null">
+        question_1,
+      </if>
+      <if test="question2 != null">
+        question_2,
+      </if>
+      <if test="answer1 != null">
+        answer_1,
+      </if>
+      <if test="answer2 != null">
+        answer_2,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="passwordId != null">
+        #{passwordId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="question1 != null">
+        #{question1,jdbcType=VARCHAR},
+      </if>
+      <if test="question2 != null">
+        #{question2,jdbcType=VARCHAR},
+      </if>
+      <if test="answer1 != null">
+        #{answer1,jdbcType=VARCHAR},
+      </if>
+      <if test="answer2 != null">
+        #{answer2,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffcs.demo.entity.ForgetPwdInfo">
+    update forget_pwd_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="question1 != null">
+        question_1 = #{question1,jdbcType=VARCHAR},
+      </if>
+      <if test="question2 != null">
+        question_2 = #{question2,jdbcType=VARCHAR},
+      </if>
+      <if test="answer1 != null">
+        answer_1 = #{answer1,jdbcType=VARCHAR},
+      </if>
+      <if test="answer2 != null">
+        answer_2 = #{answer2,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where password_id = #{passwordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ffcs.demo.entity.ForgetPwdInfo">
+    update forget_pwd_info
+    set user_id = #{userId,jdbcType=INTEGER},
+      question_1 = #{question1,jdbcType=VARCHAR},
+      question_2 = #{question2,jdbcType=VARCHAR},
+      answer_1 = #{answer1,jdbcType=VARCHAR},
+      answer_2 = #{answer2,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=INTEGER}
+    where password_id = #{passwordId,jdbcType=INTEGER}
+  </update>
+  <resultMap id="BaseResultMap" type="com.ffcs.demo.entity.ForgetPwdInfo">
+    <id column="password_id" jdbcType="INTEGER" property="passwordId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="question_1" jdbcType="VARCHAR" property="question1" />
+    <result column="question_2" jdbcType="VARCHAR" property="question2" />
+    <result column="answer_1" jdbcType="VARCHAR" property="answer1" />
+    <result column="answer_2" jdbcType="VARCHAR" property="answer2" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    password_id, user_id, question_1, question_2, answer_1, answer_2, user_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from forget_pwd_info
+    where password_id = #{passwordId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from forget_pwd_info
+    where password_id = #{passwordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ffcs.demo.entity.ForgetPwdInfo">
+    insert into forget_pwd_info (password_id, user_id, question_1, 
+      question_2, answer_1, answer_2, 
+      user_type)
+    values (#{passwordId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{question1,jdbcType=VARCHAR}, 
+      #{question2,jdbcType=VARCHAR}, #{answer1,jdbcType=VARCHAR}, #{answer2,jdbcType=VARCHAR}, 
+      #{userType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ffcs.demo.entity.ForgetPwdInfo">
+    insert into forget_pwd_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="passwordId != null">
+        password_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="question1 != null">
+        question_1,
+      </if>
+      <if test="question2 != null">
+        question_2,
+      </if>
+      <if test="answer1 != null">
+        answer_1,
+      </if>
+      <if test="answer2 != null">
+        answer_2,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="passwordId != null">
+        #{passwordId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="question1 != null">
+        #{question1,jdbcType=VARCHAR},
+      </if>
+      <if test="question2 != null">
+        #{question2,jdbcType=VARCHAR},
+      </if>
+      <if test="answer1 != null">
+        #{answer1,jdbcType=VARCHAR},
+      </if>
+      <if test="answer2 != null">
+        #{answer2,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffcs.demo.entity.ForgetPwdInfo">
+    update forget_pwd_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="question1 != null">
+        question_1 = #{question1,jdbcType=VARCHAR},
+      </if>
+      <if test="question2 != null">
+        question_2 = #{question2,jdbcType=VARCHAR},
+      </if>
+      <if test="answer1 != null">
+        answer_1 = #{answer1,jdbcType=VARCHAR},
+      </if>
+      <if test="answer2 != null">
+        answer_2 = #{answer2,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where password_id = #{passwordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ffcs.demo.entity.ForgetPwdInfo">
+    update forget_pwd_info
+    set user_id = #{userId,jdbcType=INTEGER},
+      question_1 = #{question1,jdbcType=VARCHAR},
+      question_2 = #{question2,jdbcType=VARCHAR},
+      answer_1 = #{answer1,jdbcType=VARCHAR},
+      answer_2 = #{answer2,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=INTEGER}
+    where password_id = #{passwordId,jdbcType=INTEGER}
+  </update>
+</mapper>

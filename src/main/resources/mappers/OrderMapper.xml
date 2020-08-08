@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ffcs.demo.dao.mapper.OrderInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.ffcs.demo.entity.OrderInfo" >
+<mapper namespace="com.ffcs.demo.dao.mapper.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.ffcs.demo.entity.Order" >
     <id column="order_id" property="orderId" jdbcType="INTEGER" />
     <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
     <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
     <result column="buyer_id" property="buyerId" jdbcType="INTEGER" />
-    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
     <result column="price" property="price" jdbcType="DECIMAL" />
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="lat" property="lat" jdbcType="VARCHAR" />
@@ -15,8 +14,8 @@
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    order_id, order_no, order_status, buyer_id, goods_id, price, address, lat, 	lng, 
-    create_time, remark
+    order_id, order_no, order_status, buyer_id, price, address, lat, 	lng, create_time, 
+    remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -28,17 +27,17 @@
     delete from order_info
     where order_id = #{orderId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.ffcs.demo.entity.OrderInfo" >
+  <insert id="insert" parameterType="com.ffcs.demo.entity.Order" >
     insert into order_info (order_id, order_no, order_status, 
-      buyer_id, goods_id, price, 
-      address, lat, 	lng, 
-      create_time, remark)
+      buyer_id, price, address, 
+      lat, 	lng, create_time, 
+      remark)
     values (#{orderId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, 
-      #{buyerId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, 
-      #{address,jdbcType=VARCHAR}, #{lat,jdbcType=VARCHAR}, #{	lng,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+      #{buyerId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{address,jdbcType=VARCHAR}, 
+      #{lat,jdbcType=VARCHAR}, #{	lng,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ffcs.demo.entity.OrderInfo" >
+  <insert id="insertSelective" parameterType="com.ffcs.demo.entity.Order" >
     insert into order_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="orderId != null" >
@@ -52,9 +51,6 @@
       </if>
       <if test="buyerId != null" >
         buyer_id,
-      </if>
-      <if test="goodsId != null" >
-        goods_id,
       </if>
       <if test="price != null" >
         price,
@@ -88,9 +84,6 @@
       <if test="buyerId != null" >
         #{buyerId,jdbcType=INTEGER},
       </if>
-      <if test="goodsId != null" >
-        #{goodsId,jdbcType=INTEGER},
-      </if>
       <if test="price != null" >
         #{price,jdbcType=DECIMAL},
       </if>
@@ -111,7 +104,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ffcs.demo.entity.OrderInfo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffcs.demo.entity.Order" >
     update order_info
     <set >
       <if test="orderNo != null" >
@@ -122,9 +115,6 @@
       </if>
       <if test="buyerId != null" >
         buyer_id = #{buyerId,jdbcType=INTEGER},
-      </if>
-      <if test="goodsId != null" >
-        goods_id = #{goodsId,jdbcType=INTEGER},
       </if>
       <if test="price != null" >
         price = #{price,jdbcType=DECIMAL},
@@ -147,12 +137,11 @@
     </set>
     where order_id = #{orderId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ffcs.demo.entity.OrderInfo" >
+  <update id="updateByPrimaryKey" parameterType="com.ffcs.demo.entity.Order" >
     update order_info
     set order_no = #{orderNo,jdbcType=VARCHAR},
       order_status = #{orderStatus,jdbcType=INTEGER},
       buyer_id = #{buyerId,jdbcType=INTEGER},
-      goods_id = #{goodsId,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
       address = #{address,jdbcType=VARCHAR},
       lat = #{lat,jdbcType=VARCHAR},
