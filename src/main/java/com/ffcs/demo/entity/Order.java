@@ -80,11 +80,11 @@ public class Order {
         this.lat = lat == null ? null : lat.trim();
     }
 
-    public String get	lng() {
+    public String getlng() {
         return 	lng;
     }
 
-    public void set	lng(String 	lng) {
+    public void setlng(String 	lng) {
         this.	lng = 	lng == null ? null : 	lng.trim();
     }
 

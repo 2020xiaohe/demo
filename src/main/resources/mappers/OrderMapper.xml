@@ -17,6 +17,7 @@
     order_id, order_no, order_status, buyer_id, price, address, lat, 	lng, create_time, 
     remark
   </sql>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

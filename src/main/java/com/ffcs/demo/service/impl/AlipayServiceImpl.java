@@ -6,9 +6,11 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.ffcs.demo.dao.mapper.CartMapper;
 import com.ffcs.demo.domain.AlipayBean;
 import com.ffcs.demo.service.AlipayService;
 import com.ffcs.demo.utils.alipay.AlipayConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -18,7 +20,6 @@ import java.util.UUID;
  */
 @Service
 public class AlipayServiceImpl implements AlipayService {
-
 
     @Override
     public String alipay(AlipayBean alipayBean) throws AlipayApiException {
