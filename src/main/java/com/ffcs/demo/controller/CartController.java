@@ -5,8 +5,7 @@ import com.ffcs.demo.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,7 @@ import java.util.Map;
  * create by clr on 2020/8/8
  */
 
-@Controller
+@RestController
 @RequestMapping("/cart")
 public class CartController {
 
@@ -25,21 +24,19 @@ public class CartController {
     /**
      * 查询购物车商品
      */
-    @RequestMapping("/query")
-    @ResponseBody
-    public List<Cart> query(Cart cart) {
+    @PostMapping("/query")
+    public List<Cart> query(@RequestBody Cart cart) {
+        System.out.println(cart);
         return cartService.query(cart);
     }
 
     /**
      * 添加购物车商品
-     *
      * @param cart
      * @return
      */
-    @RequestMapping("/add")
-    @ResponseBody
-    public int add(Cart cart) {
+    @PostMapping("/add")
+    public int add(@RequestBody Cart cart) {
         return cartService.add(cart);
     }
 
@@ -49,9 +46,8 @@ public class CartController {
      * @param cart
      * @return
      */
-    @RequestMapping("/update")
-    @ResponseBody
-    public int update(Cart cart) {
+    @PostMapping("/update")
+    public int update( @RequestBody Cart cart) {
         return cartService.update(cart);
     }
 
@@ -61,9 +57,8 @@ public class CartController {
      * @param cartId
      * @return
      */
-    @RequestMapping("/del")
-    @ResponseBody
-    public int delete(Integer cartId) {
+    @RequestMapping("/del/{cartId}")
+    public int delete(@PathVariable Integer cartId) {
         return cartService.del(cartId);
     }
 }
