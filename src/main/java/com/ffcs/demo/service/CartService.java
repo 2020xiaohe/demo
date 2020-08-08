@@ -1,7 +1,6 @@
 package com.ffcs.demo.service;
 
 import com.ffcs.demo.entity.Cart;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
@@ -9,11 +8,11 @@ import java.util.Map;
 
 public interface CartService {
 
-    public List<Map<String,Object>> query(Integer userId);
+     List<Cart> query(Cart cart);
 
-    public int add(Cart cart);
+     int add(Cart cart);
 
-    public int del(Integer cartId);
+     int del(Integer cartId);
 
-    public int update(Cart cart);
+     int update(Cart cart);
 }

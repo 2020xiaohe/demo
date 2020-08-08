@@ -1,59 +1,69 @@
 package com.ffcs.demo.controller;
 
+import com.ffcs.demo.entity.Cart;
 import com.ffcs.demo.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+/**
+ * create by clr on 2020/8/8
+ */
+
+@Controller
 @RequestMapping("/cart")
 public class CartController {
 
     @Autowired
     private CartService cartService;
+
     /**
      * 查询购物车商品
      */
     @RequestMapping("/query")
     @ResponseBody
-    public List<Map<String,Object>> query(Integer userId)  {
-        System.out.println(userId);
-    return cartService.query(userId);
+    public List<Cart> query(Cart cart) {
+        return cartService.query(cart);
     }
 
     /**
      * 添加购物车商品
-     * @param req
+     *
+     * @param cart
+     * @return
      */
     @RequestMapping("/add")
     @ResponseBody
-    public void add(HttpServletRequest req)  {
-
+    public int add(Cart cart) {
+        return cartService.add(cart);
     }
 
     /**
-     * 修改购物车商品
-     * @param req
+     * 修改购物车
+     *
+     * @param cart
+     * @return
      */
     @RequestMapping("/update")
     @ResponseBody
-    public void update(HttpServletRequest req)  {
-
+    public int update(Cart cart) {
+        return cartService.update(cart);
     }
+
     /**
-     * 删除购物车商品
-     * @param req
+     * 删除购物车
+     *
+     * @param cartId
+     * @return
      */
     @RequestMapping("/del")
     @ResponseBody
-    public void delete(HttpServletRequest req)  {
-
+    public int delete(Integer cartId) {
+        return cartService.del(cartId);
     }
 }
