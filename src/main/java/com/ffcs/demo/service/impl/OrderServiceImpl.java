@@ -67,4 +67,9 @@ public class OrderServiceImpl implements OrderService{
     public List<OrderGoods> getOrderGoods(int orderNo) {
         return orderGoodsMapper.getOrderGoods(orderNo);
     }
+
+    @Override
+    public List<Order> getByBuyerId(int buyerId) {
+        return orderInfoMapper.getByBuyerId();
+    }
 }

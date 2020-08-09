@@ -17,4 +17,7 @@ public interface OrderService {
     public List<Order> getAll();
 
     List<OrderGoods> getOrderGoods(int orderNo);
+
+    public  List<Order> getByBuyerId(int buyerId);
 }
+
