@@ -116,6 +116,34 @@ public class OrderController {
         json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
         return json.toJSONString();
     }
+
+    /**
+     * 分页查询个人订单
+     * @param pageNum
+     * @param pageSize
+     * @param buyerId
+     * @return
+     */
+    @RequestMapping("/getPageOrderByBuyerId")
+    @ResponseBody
+    public String getPageOrderByBuyerId(int pageNum, int pageSize, int buyerId){
+        JSONObject json = new JSONObject();
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<Order> pageInfo = new PageInfo<>(orderService.getByBuyerId(buyerId));
+        for (Order g : pageInfo.getList() ) {
+            switch (g.getOrderStatus()){
+                case 1:{g.setStatusDesc("进行中"); break;}
+                case 2:{g.setStatusDesc("取消");break;}
+                case 3:{g.setStatusDesc("完成");break;}
+                case 4:{g.setStatusDesc("退款中");break;}
+                case 5:{g.setStatusDesc("退款失败");break;}
+                case 6:{g.setStatusDesc("退款完成");break;}
+            }
+        }
+        json.put("ordersInfo",pageInfo);
+        json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        return json.toJSONString();
+    }
 }
 
 
