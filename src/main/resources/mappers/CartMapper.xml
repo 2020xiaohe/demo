@@ -40,7 +40,7 @@
     insert into cart (cart_id, user_id, goods_id, 
       count, opr_date)
     values (#{cartId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, 
-      #{count,jdbcType=INTEGER}, #{oprDate,jdbcType=TIMESTAMP})
+      #{count,jdbcType=INTEGER}, now())
   </insert>
   <insert id="insertSelective" parameterType="com.ffcs.demo.entity.Cart" >
     insert into cart

@@ -1,6 +1,7 @@
 package com.ffcs.demo.service;
 
 import com.ffcs.demo.entity.Cart;
+import com.ffcs.demo.req.CartReq;
 
 import java.util.List;
 import java.util.Map;
@@ -8,11 +9,11 @@ import java.util.Map;
 
 public interface CartService {
 
-     List<Cart> query(Cart cart);
+     List<Map<String,Object>> query(Cart cart);
 
      int add(Cart cart);
 
      int del(Integer cartId);
 
-     int update(Cart cart);
+     int update(CartReq cartReq);
 }

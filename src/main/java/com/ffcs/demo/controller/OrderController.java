@@ -19,10 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -40,7 +37,8 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
-    @RequestMapping("/alipay")//付款
+
+    @PostMapping("/alipay")//付款
     @ResponseBody
     public String alipay(AlipayReq alipayReq) throws AlipayApiException {
         AlipayBean alipayBean = new AlipayBean();
@@ -53,7 +51,7 @@ public class OrderController {
         return alipayService.alipay(alipayBean);
     }
 
-    @RequestMapping("/refund")//退款
+    @PostMapping("/refund")//退款
     @ResponseBody
     public String refund(HttpServletRequest req) throws AlipayApiException {
         AlipayBean alipayBean = new AlipayBean();
@@ -65,9 +63,9 @@ public class OrderController {
     }
 
 
-    @RequestMapping("/query")
+    @PostMapping("/query")
     @ResponseBody
-    public List<Order> query(Order order) {
+    public List<Order> query( Order order) {
         return orderService.select(order);
     }
 

@@ -1,6 +1,7 @@
 package com.ffcs.demo.controller;
 
 import com.ffcs.demo.entity.Cart;
+import com.ffcs.demo.req.CartReq;
 import com.ffcs.demo.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 /**
  * create by clr on 2020/8/8
  */
-
+@CrossOrigin
 @RestController
 @RequestMapping("/cart")
 public class CartController {
@@ -25,8 +26,7 @@ public class CartController {
      * 查询购物车商品
      */
     @PostMapping("/query")
-    public List<Cart> query(@RequestBody Cart cart) {
-        System.out.println(cart);
+    public List<Map<String,Object>> query(@RequestBody Cart cart) {
         return cartService.query(cart);
     }
 
@@ -43,12 +43,12 @@ public class CartController {
     /**
      * 修改购物车
      *
-     * @param cart
+     * @param cartReq
      * @return
      */
     @PostMapping("/update")
-    public int update( @RequestBody Cart cart) {
-        return cartService.update(cart);
+    public int update( @RequestBody CartReq cartReq) {
+        return cartService.update(cartReq);
     }
 
     /**
@@ -57,6 +57,7 @@ public class CartController {
      * @param cartId
      * @return
      */
+
     @RequestMapping("/del/{cartId}")
     public int delete(@PathVariable Integer cartId) {
         return cartService.del(cartId);

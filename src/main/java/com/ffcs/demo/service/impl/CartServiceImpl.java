@@ -2,7 +2,10 @@ package com.ffcs.demo.service.impl;
 
 import com.ffcs.demo.dao.mapper.CartMapper;
 import com.ffcs.demo.entity.Cart;
+import com.ffcs.demo.req.CartReq;
 import com.ffcs.demo.service.CartService;
+import io.swagger.models.auth.In;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +27,7 @@ public class CartServiceImpl implements CartService {
      * @return
      */
     @Override
-    public List<Cart> query(Cart cart) {
-        System.out.println(cart);
+    public List<Map<String,Object>> query(Cart cart) {
         return cartMapper.select(cart);
     }
 
@@ -39,13 +41,16 @@ public class CartServiceImpl implements CartService {
         Cart query = new Cart();
         query.setGoodsId(cart.getGoodsId());
         query.setUserId(cart.getUserId());
-        int isExist = cartMapper.select(cart).size();
+        List<Map<String,Object>> cartList =  cartMapper.select(query);
+        System.out.println(cartList);
+        int isExist = cartList.size();
         int success=0;
-        if(isExist>0)//判断该用户购物车里是否有这个商品，有则数量+1  没有则新增
+        if(cartList.size()>0)//判断该用户购物车里是否有这个商品，有则数量+1  没有则新增
         {
-            query.setCartId(cart.getCartId());
-            query.setCount(cart.getCount()+1);
-            success=this.update(cart);
+            Cart updateCart = new Cart();
+            updateCart.setCartId((Integer) cartList.get(0).get("cart_id"));
+            updateCart.setCount(Integer.parseInt(cartList.get(0).get("count").toString())+1);
+            success=cartMapper.updateByPrimaryKeySelective(updateCart);
         }
         else{
             success=cartMapper.insert(cart);
@@ -54,7 +59,7 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
-     * 删除购物车
+     * 删除购物车商品
      * @param cartId
      * @return
      */
@@ -63,13 +68,24 @@ public class CartServiceImpl implements CartService {
         return cartMapper.deleteByPrimaryKey(cartId);
     }
 
+
     /**
      * 修改购物车信息
-     * @param cart
+     * @param cartReq
      * @return
      */
     @Override
-    public int update(Cart cart) {
-        return cartMapper.updateByPrimaryKeySelective(cart);
+    public int update(CartReq cartReq) {
+        Cart updateCart=new Cart();
+        BeanUtils.copyProperties(cartReq, updateCart); //把前面对象的属性值给后面对象对应的属性
+        int action=cartReq.getAction();
+        if(action==1)//+1
+        {
+            updateCart.setCount(updateCart.getCount()+1);
+        }
+        else{//-1
+            updateCart.setCount(updateCart.getCount()-1);
+        }
+        return cartMapper.updateByPrimaryKeySelective(updateCart);
     }
 }
