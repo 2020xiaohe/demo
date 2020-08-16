@@ -19,8 +19,8 @@ import java.util.UUID;
 public class PicUtils {
     private Logger logger = LoggerFactory.getLogger(PicUtils.class);
     //这是本地存入的格式，上传到服务器的话，格式类似于，"/root/images/pc/"
-    private static String UPLOAD_FOLDER = "D:/images/pc/";
-//    private static String UPLOAD_FOLDER = "/root/images/";
+//    private static String UPLOAD_FOLDER = "D:/images/pc/";
+    private static String UPLOAD_FOLDER = "/root/images/";
     //Thread.currentThread().getContextClassLoader().getResource("").getPath();(获取当前的绝对路径的方法，这里不用，得到的是这样的东西:file:/D:/java/eclipse32/workspace/jbpmtest3/bin/)
     public static String singleFileUpload(MultipartFile pc1 ) throws IOException {
         if (Objects.isNull(pc1) || pc1.isEmpty()) {//判断非空

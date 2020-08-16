@@ -12,9 +12,13 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +34,21 @@ public class GoodsInfoController {
 
     @Autowired
     private GoodsInfoService goodsInfoService;
+
+    /**
+     * 根据文件名获取图片
+     * @return
+     * @throws IOException
+     */
+    @PostMapping(value = "/getPic",produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public byte[] getImage(String picPath) throws IOException {
+        File file = new File(picPath);
+        FileInputStream inputStream = new FileInputStream(file);
+        byte[] bytes = new byte[inputStream.available()];
+        inputStream.read(bytes, 0, inputStream.available());
+        return bytes;
+    }
 
     /**
      * 商品管理---添加商品
