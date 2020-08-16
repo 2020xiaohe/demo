@@ -29,4 +29,9 @@ public class AlipayReq {
      * 购物车的商品
      */
     private List<Cart> cartList;
+
+    /**
+     * 用户id
+     */
+    private Integer userId;
 }

@@ -20,7 +20,7 @@ public class Order {
 
     private String lat;
 
-    private String 	lng;
+    private String lng;
 
     private Date createTime;
 
@@ -83,11 +83,11 @@ public class Order {
     }
 
     public String getlng() {
-        return 	lng;
+        return lng;
     }
 
-    public void setlng(String 	lng) {
-        this.	lng = 	lng == null ? null : 	lng.trim();
+    public void setlng(String lng) {
+        this.lng = lng == null ? null : lng.trim();
     }
 
     public Date getCreateTime() {

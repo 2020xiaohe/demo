@@ -33,7 +33,7 @@
       )
     values (#{orderGoodsId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, 
       #{goodsCount,jdbcType=INTEGER}, #{goodsPerPrice,jdbcType=DECIMAL}, #{goodesTotalPrice,jdbcType=DECIMAL}, 
-      #{goodsContent,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{oprId,jdbcType=INTEGER}
+      #{goodsContent,jdbcType=VARCHAR},now(), #{oprId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ffcs.demo.entity.OrderGoods" >

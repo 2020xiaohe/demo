@@ -9,8 +9,10 @@ import com.ffcs.demo.entity.Goods;
 import com.ffcs.demo.entity.Order;
 import com.ffcs.demo.entity.OrderGoods;
 import com.ffcs.demo.req.AlipayReq;
+import com.ffcs.demo.req.OrderReq;
 import com.ffcs.demo.service.AlipayService;
 import com.ffcs.demo.service.CartService;
+import com.ffcs.demo.service.OrderGoodsService;
 import com.ffcs.demo.service.OrderService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,9 +24,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
+
 @CrossOrigin
-@Controller
+@RestController
 @RequestMapping("/order")
 public class OrderController {
     private Logger logger = LoggerFactory.getLogger(OrderController.class);
@@ -38,9 +42,13 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private OrderGoodsService orderGoodsService;
+
+
     @PostMapping("/alipay")//付款
-    @ResponseBody
-    public String alipay(AlipayReq alipayReq) throws AlipayApiException {
+    public String alipay(@RequestBody AlipayReq alipayReq) throws AlipayApiException {
+
         AlipayBean alipayBean = new AlipayBean();
         alipayBean.setOut_trade_no(alipayReq.getOut_trade_no());
         alipayBean.setSubject(alipayReq.getSubject());
@@ -51,21 +59,54 @@ public class OrderController {
         return alipayService.alipay(alipayBean);
     }
 
-    @PostMapping("/refund")//退款
-    @ResponseBody
-    public String refund(HttpServletRequest req) throws AlipayApiException {
+    @PostMapping("/refund")//整个订单退款
+    public String refund(@RequestBody AlipayReq alipayReq) throws AlipayApiException {
         AlipayBean alipayBean = new AlipayBean();
-        alipayBean.setOut_trade_no(req.getParameter("outTradeNo"));
-        alipayBean.setSubject(req.getParameter("subject"));
-        alipayBean.setTotal_amount(req.getParameter("totalAmount"));
-        alipayBean.setBody(req.getParameter("body"));
+        alipayBean.setOut_trade_no(alipayReq.getOut_trade_no());
+        alipayBean.setSubject(alipayReq.getSubject());
+        alipayBean.setTotal_amount(alipayReq.getTotal_amount());
+        alipayBean.setBody(alipayReq.getBody());
         return alipayService.refund(alipayBean);
+    }
+
+    @PostMapping("/update")
+    public int update(@RequestBody Order order) {
+        int success = 0;
+        success = orderService.update(order);
+        return success;
+    }
+
+    @PostMapping("/add")
+    public String add(@RequestBody OrderReq orderReq) {
+        //添加订单表
+        //订单号
+        System.out.println(orderReq);
+        long orderCode = System.currentTimeMillis();
+        String orderNo = Long.toString(orderCode) + orderReq.getUserId();
+        Order order = new Order();
+        order.setOrderNo(orderNo);
+        order.setBuyerId(orderReq.getUserId());
+        order.setPrice(orderReq.getAllPrice());
+        order.setRemark(orderReq.getRemark());
+        order.setOrderStatus(0);//订单状态 0待付款 1 为进行中，2 为取消，3 为完成 4 退款中 5 退款失败 6 退款完成
+        List<OrderGoods> orderList = orderReq.getOrderList();
+        int result = orderService.add(order);
+        if (result > 0) {
+            //订单商品添加
+            for (OrderGoods orderGoods : orderList) {
+                BigDecimal goodsTotalPrice = orderGoods.getGoodsPerPrice().multiply(new BigDecimal(orderGoods.getGoodsCount()));
+                orderGoods.setGoodesTotalPrice(goodsTotalPrice);
+                orderGoods.setOrderNo(orderNo);
+                orderGoodsService.add(orderGoods);
+            }
+        }
+        return orderNo;
     }
 
 
     @PostMapping("/query")
     @ResponseBody
-    public List<Order> query( Order order) {
+    public List<Order> query(Order order) {
         return orderService.select(order);
     }
 
@@ -80,43 +121,63 @@ public class OrderController {
 
     /**
      * 查询所有订单--分页
+     *
      * @param pageNum
      * @param pageSize
      * @return
      */
     @GetMapping("/getPageAllOrderInfo")
     @ResponseBody
-    public String getPageAllOrder(int pageNum, int pageSize){
-        JSONObject json= new JSONObject();
-        PageHelper.startPage(pageNum,pageSize);
+    public String getPageAllOrder(int pageNum, int pageSize) {
+        JSONObject json = new JSONObject();
+        PageHelper.startPage(pageNum, pageSize);
         PageInfo<Order> pageInfo = new PageInfo<>(orderService.getAll());
-        for (Order g : pageInfo.getList() ) {
-            switch (g.getOrderStatus()){
-                case 1:{g.setStatusDesc("进行中"); break;}
-                case 2:{g.setStatusDesc("取消");break;}
-                case 3:{g.setStatusDesc("完成");break;}
-                case 4:{g.setStatusDesc("退款中");break;}
-                case 5:{g.setStatusDesc("退款失败");break;}
-                case 6:{g.setStatusDesc("退款完成");break;}
+        for (Order g : pageInfo.getList()) {
+            switch (g.getOrderStatus()) {
+                case 1: {
+                    g.setStatusDesc("进行中");
+                    break;
+                }
+                case 2: {
+                    g.setStatusDesc("取消");
+                    break;
+                }
+                case 3: {
+                    g.setStatusDesc("完成");
+                    break;
+                }
+                case 4: {
+                    g.setStatusDesc("退款中");
+                    break;
+                }
+                case 5: {
+                    g.setStatusDesc("退款失败");
+                    break;
+                }
+                case 6: {
+                    g.setStatusDesc("退款完成");
+                    break;
+                }
             }
         }
-        json.put("ordersInfo",pageInfo);
-        json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        json.put("ordersInfo", pageInfo);
+        json.put(OperResult.OPERATION_RESULT_KEY, OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
         return json.toJSONString();
     }
 
     @GetMapping("/getOrderGoods")
     @ResponseBody
-    public String getOrderGoods(int orderNo){
-        JSONObject json= new JSONObject();
+    public String getOrderGoods(int orderNo) {
+        JSONObject json = new JSONObject();
         List<OrderGoods> orderGoods = orderService.getOrderGoods(orderNo);
-        json.put("orderGoods",orderGoods);
-        json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        json.put("orderGoods", orderGoods);
+        json.put(OperResult.OPERATION_RESULT_KEY, OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
         return json.toJSONString();
     }
 
     /**
      * 分页查询个人订单
+     *
      * @param pageNum
      * @param pageSize
      * @param buyerId
@@ -124,22 +185,40 @@ public class OrderController {
      */
     @RequestMapping("/getPageOrderByBuyerId")
     @ResponseBody
-    public String getPageOrderByBuyerId(int pageNum, int pageSize, int buyerId){
+    public String getPageOrderByBuyerId(int pageNum, int pageSize, int buyerId) {
         JSONObject json = new JSONObject();
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         PageInfo<Order> pageInfo = new PageInfo<>(orderService.getByBuyerId(buyerId));
-        for (Order g : pageInfo.getList() ) {
-            switch (g.getOrderStatus()){
-                case 1:{g.setStatusDesc("进行中"); break;}
-                case 2:{g.setStatusDesc("取消");break;}
-                case 3:{g.setStatusDesc("完成");break;}
-                case 4:{g.setStatusDesc("退款中");break;}
-                case 5:{g.setStatusDesc("退款失败");break;}
-                case 6:{g.setStatusDesc("退款完成");break;}
+        for (Order g : pageInfo.getList()) {
+            switch (g.getOrderStatus()) {
+                case 1: {
+                    g.setStatusDesc("进行中");
+                    break;
+                }
+                case 2: {
+                    g.setStatusDesc("取消");
+                    break;
+                }
+                case 3: {
+                    g.setStatusDesc("完成");
+                    break;
+                }
+                case 4: {
+                    g.setStatusDesc("退款中");
+                    break;
+                }
+                case 5: {
+                    g.setStatusDesc("退款失败");
+                    break;
+                }
+                case 6: {
+                    g.setStatusDesc("退款完成");
+                    break;
+                }
             }
         }
-        json.put("ordersInfo",pageInfo);
-        json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        json.put("ordersInfo", pageInfo);
+        json.put(OperResult.OPERATION_RESULT_KEY, OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
         return json.toJSONString();
     }
 }
