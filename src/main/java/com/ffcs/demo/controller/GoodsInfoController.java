@@ -43,6 +43,17 @@ public class GoodsInfoController {
     @Autowired
     private GoodsInfoService goodsInfoService;
 
+
+    @PostMapping(value = "/uploadPic")
+    @ResponseBody
+    public String uploadPic(MultipartFile file) throws Exception {
+        String result = "";
+        result = PicUtils.singleFileUpload(file);
+        return  result;
+    }
+
+
+
     /**
      * 根据文件名获取图片
      * @return
@@ -69,8 +80,6 @@ public class GoodsInfoController {
         JSONObject json= new JSONObject();
         String result = "";
         try {
-            result = PicUtils.singleFileUpload(pic);
-            goodsInfo.setPicPath(result);
             goodsInfo.setOperId((Integer) session.getAttribute("userId"));
             goodsInfo.setStatus(1);
             goodsInfo.setOperDate(new Date());
