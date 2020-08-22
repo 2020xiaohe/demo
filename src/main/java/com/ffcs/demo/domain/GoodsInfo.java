@@ -1,5 +1,6 @@
 package com.ffcs.demo.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -60,12 +61,14 @@ public class GoodsInfo implements Serializable {
     @ManyToOne( cascade = CascadeType.REFRESH)
     @JoinColumn(name = "goods_type",referencedColumnName="type_id" ,insertable = false, updatable = false)
     @NotFound(action= NotFoundAction.IGNORE)
+    @JSONField(serialize = true)
     private GoodsType goodsType;
 
 
     @ManyToOne( cascade = CascadeType.REFRESH)
     @JoinColumn(name = "opr_id",referencedColumnName="user_id" ,insertable = false, updatable = false)
     @NotFound(action= NotFoundAction.IGNORE)
+    @JSONField(serialize = true)
     private UserInfo goodsInfoOperUser;
 
     public Integer getId() {

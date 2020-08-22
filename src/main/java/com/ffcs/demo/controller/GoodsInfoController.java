@@ -14,6 +14,11 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -116,10 +121,12 @@ public class GoodsInfoController {
     @GetMapping("/getAllGoodsInfo")
     public String  getAllGoodsInfo(int pageNum, int pageSize){
         JSONObject json= new JSONObject();
-        List<GoodsInfo> goodsInfos = goodsInfoService.getGoodsInfoDao().findAll();
-        PageHelper.startPage(pageNum,pageSize);
-        PageInfo<GoodsInfo>  pageInfo = new PageInfo<>(goodsInfos);
-        for (GoodsInfo g: pageInfo.getList() ) {
+//        List<GoodsInfo> goodsInfos = goodsInfoService.getGoodsInfoDao().findAll();
+        PagingAndSortingRepository<GoodsInfo, Integer> repository = goodsInfoService.getGoodsInfoDao();
+//        Sort sort = Sort.by(Sort.Direction.DESC,"operDate");
+        Pageable pageable = PageRequest.of(pageNum,pageSize);
+        Page<GoodsInfo> pageInfo  = repository.findAll(pageable);
+        for (GoodsInfo g: pageInfo.getContent() ) {
             if (g.getStatus() == 1){
                 g.setStatusDesc("正常");
             }else if (g.getStatus() == 2){
