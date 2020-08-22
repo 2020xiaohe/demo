@@ -162,6 +162,27 @@ public class OrderController {
         return json.toJSONString();
     }
 
+    /**
+     * 查询所有订单--分页--客户端
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/getPageAllFinishedOrderInfo")
+    @ResponseBody
+    public String getPageAllOrderClient(int pageNum, int pageSize) {
+        JSONObject json = new JSONObject();
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<Order> pageInfo = new PageInfo<>(orderService.getAllFinished());
+        for (Order g : pageInfo.getList()) {
+            g.setStatusDesc("完成");
+        }
+        json.put("ordersInfo", pageInfo);
+        json.put(OperResult.OPERATION_RESULT_KEY, OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        return json.toJSONString();
+    }
+
     @GetMapping("/getOrderGoods")
     @ResponseBody
     public String getOrderGoods(int orderNo) {

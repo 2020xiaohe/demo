@@ -156,6 +156,10 @@
     select * from order_info order by create_time
   </select>
 
+  <select id="getAllFinished" resultMap="BaseResultMap">
+    select * from order_info where order_status = 3 order by create_time
+  </select>
+
   <select id="getByBuyerId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select *
     from order_info

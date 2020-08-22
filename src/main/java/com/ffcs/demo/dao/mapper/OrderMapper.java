@@ -35,4 +35,6 @@ public interface OrderMapper {
             "from order_info t1 where 1=1 and t1.order_status=3 and DATE_FORMAT(t1.create_time, \"%Y-%m-%d\"  )=DATE_FORMAT('2020-08-11 22:07:00', \"%Y-%m-%d\" )\n" +
             "group by  DATE_FORMAT(t1.create_time, \"%Y-%m-%d\")")
     List<DayOrderStatistics> orderStatisticsByDate(Date date);
+
+    List<Order> getAllFinished();
 }

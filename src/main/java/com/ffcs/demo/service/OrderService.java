@@ -24,5 +24,7 @@ public interface OrderService {
     public  List<Order> getByBuyerId(int buyerId);
 
     List<DayOrderStatistics>  getOrderStatisticsByDate(Date date);
+
+    public  List<Order> getAllFinished();
 }
 
