@@ -4,16 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.ffcs.demo.constant.OperResult;
 import com.ffcs.demo.domain.AlipayBean;
-import com.ffcs.demo.entity.Cart;
-import com.ffcs.demo.entity.Goods;
-import com.ffcs.demo.entity.Order;
-import com.ffcs.demo.entity.OrderGoods;
+import com.ffcs.demo.entity.*;
 import com.ffcs.demo.req.AlipayReq;
 import com.ffcs.demo.req.OrderReq;
-import com.ffcs.demo.service.AlipayService;
-import com.ffcs.demo.service.CartService;
-import com.ffcs.demo.service.OrderGoodsService;
-import com.ffcs.demo.service.OrderService;
+import com.ffcs.demo.service.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -25,14 +19,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/order")
 public class OrderController {
     private Logger logger = LoggerFactory.getLogger(OrderController.class);
-
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     @Autowired
     private AlipayService alipayService;
 
@@ -44,7 +42,6 @@ public class OrderController {
 
     @Autowired
     private OrderGoodsService orderGoodsService;
-
 
     @PostMapping("/alipay")//付款
     public String alipay(@RequestBody AlipayReq alipayReq) throws AlipayApiException {
@@ -218,6 +215,15 @@ public class OrderController {
             }
         }
         json.put("ordersInfo", pageInfo);
+        json.put(OperResult.OPERATION_RESULT_KEY, OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        return json.toJSONString();
+    }
+
+    @GetMapping("/orderStatisticsByDate")
+    public String orderStatisticsByDate(Date date) throws Exception {
+        JSONObject json = new JSONObject();
+        List<DayOrderStatistics>  dayOrderStatistics=orderService.getOrderStatisticsByDate(date);
+        json.put("dayOrderStatistics", dayOrderStatistics);
         json.put(OperResult.OPERATION_RESULT_KEY, OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
         return json.toJSONString();
     }

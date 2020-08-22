@@ -33,7 +33,7 @@ public class LoginSignController {
     @Autowired
    private LoginSignService loginSignService;
     @PostMapping("/Login")
-    public JSONObject login (@RequestBody JSONObject inputJSon ,HttpServletResponse response){
+    public JSONObject login (@RequestBody JSONObject inputJSon ,HttpServletResponse response,HttpSession session){
         String userId= inputJSon.getString("userId");
         String pwd  = inputJSon.getString("pwd");
         String remember = inputJSon.getString("remember");
@@ -76,6 +76,7 @@ public class LoginSignController {
                     return result;
                 }
                 else{
+                    session.setAttribute("userId",user.getUserId());
                     if (null!=remember&&remember.equals("1")){
                     String loginInfo = userId+","+pwd;
                     Cookie userCookie=new Cookie("loginInfo",loginInfo);
@@ -191,7 +192,7 @@ public class LoginSignController {
             }
             else {
                     User record = new User();
-                    record.setPhone(Integer.valueOf(userId));
+                    record.setPhone(userId);
                     record.setUserCode(Long.valueOf(System.currentTimeMillis()));
                     record.setUserName(userName);
                     record.setUserPwd(pwd);
@@ -226,10 +227,11 @@ public class LoginSignController {
 
 
     private boolean telCheck(String tel){
-        Pattern p = Pattern.compile("^((13\\d{9}$)|(15[0,1,2,3,5,6,7,8,9]\\d{8}$)|(18[0,2,5,6,7,8,9]\\d{8}$)|(147\\d{8})$)");
+        Pattern p = Pattern.compile("^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$");
         Matcher m = p.matcher(tel);
         return m.matches();
     }
+
 
     @ApiOperation(value = "验证码")
     @GetMapping("/verifyCode")

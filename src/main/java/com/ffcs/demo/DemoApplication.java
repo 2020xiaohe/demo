@@ -10,7 +10,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @MapperScan("com.ffcs.demo.dao.mapper")
 @EnableSwagger2
-public class DemoApplication {
+public class DemoApplication  {
 
 //	// 打包
 //	@Override

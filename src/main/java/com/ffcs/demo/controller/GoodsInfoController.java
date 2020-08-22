@@ -1,6 +1,8 @@
 package com.ffcs.demo.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.ffcs.demo.constant.OperResult;
 import com.ffcs.demo.domain.GoodsInfo;
 import com.ffcs.demo.entity.Goods;
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -57,13 +60,13 @@ public class GoodsInfoController {
      * @return  保存成功/保存失败
      */
     @PostMapping("/addGoodsInfo")
-    public String addGoodsInfo(MultipartFile pic, GoodsInfo goodsInfo) {
+    public String addGoodsInfo(MultipartFile pic, GoodsInfo goodsInfo, HttpSession session) {
         JSONObject json= new JSONObject();
         String result = "";
         try {
-
             result = PicUtils.singleFileUpload(pic);
             goodsInfo.setPicPath(result);
+            goodsInfo.setOperId((Integer) session.getAttribute("userId"));
             goodsInfo.setStatus(1);
             goodsInfo.setOperDate(new Date());
             goodsInfoService.getGoodsInfoDao().save(goodsInfo);
@@ -83,10 +86,11 @@ public class GoodsInfoController {
      * @return
      */
     @GetMapping("/operGoodsInfoStatus")
-    public String operGoodsInfoStatus(Integer id, Integer goodsStatus){
+    public String operGoodsInfoStatus(Integer id, Integer goodsStatus,HttpSession session){
         JSONObject json= new JSONObject();
         GoodsInfo goodsInfo = goodsInfoService.getGoodsInfoDao().getOne(id);
         goodsInfo.setStatus(goodsStatus);
+        goodsInfo.setOperId((Integer) session.getAttribute("userId"));
         goodsInfoService.getGoodsInfoDao().save(goodsInfo);
         json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_UPDATE_SUCCESS);
         return  json.toString();
@@ -110,10 +114,12 @@ public class GoodsInfoController {
      * @return
      */
     @GetMapping("/getAllGoodsInfo")
-    public String  getAll(){
+    public String  getAllGoodsInfo(int pageNum, int pageSize){
         JSONObject json= new JSONObject();
-        List<GoodsInfo> list = goodsInfoService.getGoodsInfoDao().findAll();
-        for (GoodsInfo g:list ) {
+        List<GoodsInfo> goodsInfos = goodsInfoService.getGoodsInfoDao().findAll();
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<GoodsInfo>  pageInfo = new PageInfo<>(goodsInfos);
+        for (GoodsInfo g: pageInfo.getList() ) {
             if (g.getStatus() == 1){
                 g.setStatusDesc("正常");
             }else if (g.getStatus() == 2){
@@ -122,9 +128,9 @@ public class GoodsInfoController {
                 g.setStatusDesc("下架");
             }
         }
-        json.put("goodsInfo",list);
+        json.put("goodsInfo",pageInfo);
         json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
-        return  json.toString();
+        return JSON.toJSONString(json, SerializerFeature.DisableCircularReferenceDetect);
     }
 
     /**

@@ -10,7 +10,7 @@
     <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="credit" property="credit" jdbcType="INTEGER" />
     <result column="headPic" property="headpic" jdbcType="VARCHAR" />
   </resultMap>
@@ -162,9 +162,13 @@
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
   <select id="selectByIdPwd" resultType="com.ffcs.demo.entity.User" parameterType="String">
-    select  * from  User_info where phone = #{userId} and user_pwd = #{pwd}
+    select  * from  user_info where phone = #{userId} and user_pwd = #{pwd}
   </select>
+  <select id="selettById" resultType="com.ffcs.demo.entity.User" parameterType="String">
+    select  * from  user_info where phone = #{userId}
+  </select>
+
   <select id="selectById" resultType="com.ffcs.demo.entity.User" parameterType="String">
-    select  * from  User_info where phone = #{userId}
+    select  * from  user_info where phone = #{userId}
   </select>
 </mapper>

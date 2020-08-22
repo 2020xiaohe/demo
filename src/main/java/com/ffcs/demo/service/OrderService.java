@@ -1,9 +1,12 @@
 package com.ffcs.demo.service;
 
+import com.ffcs.demo.entity.DayOrderStatistics;
 import com.ffcs.demo.entity.Order;
 import com.ffcs.demo.entity.OrderGoods;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
     public  int add(Order order);
@@ -19,5 +22,7 @@ public interface OrderService {
     List<OrderGoods> getOrderGoods(int orderNo);
 
     public  List<Order> getByBuyerId(int buyerId);
+
+    List<DayOrderStatistics>  getOrderStatisticsByDate(Date date);
 }
 

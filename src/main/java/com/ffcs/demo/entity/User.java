@@ -17,7 +17,7 @@ public class User {
 
     private String address;
 
-    private Integer phone;
+    private String phone;
 
     private Integer credit;
 
@@ -87,11 +87,11 @@ public class User {
         this.address = address == null ? null : address.trim();
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

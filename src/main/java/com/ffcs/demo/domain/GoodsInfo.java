@@ -62,6 +62,12 @@ public class GoodsInfo implements Serializable {
     @NotFound(action= NotFoundAction.IGNORE)
     private GoodsType goodsType;
 
+
+    @ManyToOne( cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "opr_id",referencedColumnName="user_id" ,insertable = false, updatable = false)
+    @NotFound(action= NotFoundAction.IGNORE)
+    private UserInfo goodsInfoOperUser;
+
     public Integer getId() {
         return id;
     }
@@ -172,6 +178,14 @@ public class GoodsInfo implements Serializable {
 
     public void setGoodsType(GoodsType goodsType) {
         this.goodsType = goodsType;
+    }
+
+    public UserInfo getGoodsInfoOperUser() {
+        return goodsInfoOperUser;
+    }
+
+    public void setGoodsInfoOperUser(UserInfo goodsInfoOperUser) {
+        this.goodsInfoOperUser = goodsInfoOperUser;
     }
 
     @Override
