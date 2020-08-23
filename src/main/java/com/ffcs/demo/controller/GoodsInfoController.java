@@ -172,4 +172,28 @@ public class GoodsInfoController {
         json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
         return  json.toString();
     }
+
+    /**
+     * 商品管理---获取所有正常商品--分页
+     * zhuwb 20200808
+     * @return
+     */
+    @GetMapping("/getPageAllNormalGoodsInfo")
+    public String  getPageAllNormalGoodsInfo(int pageNum, int pageSize){
+        JSONObject json= new JSONObject();
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<Goods> pageInfo = new PageInfo<>(goodsInfoService.getPageALLNormal());
+        for (Goods g : pageInfo.getList() ) {
+            if (g.getStatus() == 1){
+                g.setStatusDesc("正常");
+            }else if (g.getStatus() == 2){
+                g.setStatusDesc("缺货");
+            }else {
+                g.setStatusDesc("下架");
+            }
+        }
+        json.put("goodsInfo",pageInfo);
+        json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        return  json.toString();
+    }
 }
