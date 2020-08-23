@@ -1,5 +1,6 @@
 package com.ffcs.demo.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.ffcs.demo.constant.OperResult;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -66,7 +69,24 @@ public class OrderController {
         alipayBean.setSubject(alipayReq.getSubject());
         alipayBean.setTotal_amount(alipayReq.getTotal_amount());
         alipayBean.setBody(alipayReq.getBody());
-        return alipayService.refund(alipayBean);
+//        Gson gson = new Gson();
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        Map<String, Object> map2 = new HashMap<String, Object>();
+//        map = gson.fromJson(alipayService.refund(alipayBean), map.getClass());//关键
+//        map2=gson.fromJson((String) map.get("alipay_trade_refund_response"),map.getClass());
+//        String msg=(String) map2.get("msg");
+
+        Map map = JSON.parseObject(alipayService.refund(alipayBean),Map.class);
+        Map map2=JSON.parseObject( map.get("alipay_trade_refund_response").toString(),Map.class);
+        String msg= map2.get("msg").toString();
+        if(msg.equals("Success"))//退款成功 修改订单状态
+        {
+            Order order = new Order();
+            order.setOrderStatus(6);
+            order.setOrderNo(alipayReq.getOut_trade_no());
+            this.update(order);
+        }
+        return msg;
     }
 
     @PostMapping("/update")
