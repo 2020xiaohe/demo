@@ -16,7 +16,7 @@ public interface GoodsInfoDao extends JpaRepository<GoodsInfo,Integer> {
     @Transactional
     @Query(nativeQuery = true,
             value = "update goods_info  "
-            +"set  goods_name=:#{#goodsInfo.name},goods_type=:#{#goodsInfo.type},remark=:#{#goodsInfo.remark},category=:#{#goodsInfo.category}"
-            +",search_count=:#{#goodsInfo.searchCount},goods_detail=:#{#goodsInfo.detail},goods_price=:#{#goodsInfo.money} where goods_id=:#{#goodsInfo.id}")
+            +"set  goods_name=:#{#goodsInfo.name},goods_type=:#{#goodsInfo.type}"
+            +",goods_price=:#{#goodsInfo.money},goods_pic=:#{#goodsInfo.picPath},goods_detail=:#{#goodsInfo.detail},status=:#{#goodsInfo.status} where goods_id=:#{#goodsInfo.id}")
     void updateGoodsInfo(@Param("goodsInfo") GoodsInfo goodsInfo);
 }

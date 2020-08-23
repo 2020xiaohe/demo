@@ -17,7 +17,7 @@ public class GoodsType implements Serializable {
     private static final long serialVersionUID = 372937498845022449L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "type_id")
     private Integer id;
 

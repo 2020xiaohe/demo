@@ -161,14 +161,14 @@
       headPic = #{headpic,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
-  <select id="selectByIdPwd" resultType="com.ffcs.demo.entity.User" parameterType="String">
+  <select id="selectByIdPwd" resultMap="BaseResultMap"  parameterType="String">
     select  * from  user_info where phone = #{userId} and user_pwd = #{pwd}
   </select>
   <select id="selettById" resultType="com.ffcs.demo.entity.User" parameterType="String">
     select  * from  user_info where phone = #{userId}
   </select>
 
-  <select id="selectById" resultType="com.ffcs.demo.entity.User" parameterType="String">
+  <select id="selectById" resultMap="BaseResultMap" parameterType="String">
     select  * from  user_info where phone = #{userId}
   </select>
 </mapper>

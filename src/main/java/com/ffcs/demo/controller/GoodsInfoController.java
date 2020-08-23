@@ -94,6 +94,20 @@ public class GoodsInfoController {
     }
 
     /**
+     * 根据商品id删除商品信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/delGoodsInfoById")
+    public String delGoodsInfoById(Integer id){
+        JSONObject json= new JSONObject();
+        goodsInfoService.getGoodsInfoDao().deleteById(id);
+        String result = OperResult.OPERATION_RESULT_DELETE_SUCCESS;
+        json.put(OperResult.OPERATION_RESULT_KEY,result);
+        return  json.toString();
+    }
+
+    /**
      * 商品管理---商品状态管理
      * @param id  商品id
      * @param goodsStatus  商品状态修改为 1---正常 2---缺货 3---下架

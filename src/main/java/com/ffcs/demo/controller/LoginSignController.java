@@ -10,6 +10,7 @@ import com.ffcs.demo.utils.validatecode.SimpleCharVerifyCodeGenImpl;
 import com.ffcs.demo.utils.validatecode.VerifyCode;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("api/LoginSign")
 public class LoginSignController {
+    private org.slf4j.Logger logger = LoggerFactory.getLogger(GoodsInfoController.class);
     @Autowired
    private LoginSignService loginSignService;
     @PostMapping("/Login")
@@ -66,16 +68,14 @@ public class LoginSignController {
                 result.put("resultCode",0);
                 result.put("resultObject","");
                 return result;
-            }
-            else {
+            } else {
                 user=loginSignService.selectByIdPwd(userId,pwd);
                 if (user==null) {
                     result.put("resultMessage","登陆失败，密码错误");
                     result.put("resultCode",0);
                     result.put("resultObject","");
                     return result;
-                }
-                else{
+                } else{
                     session.setAttribute("userId",user.getUserId());
                     if (null!=remember&&remember.equals("1")){
                     String loginInfo = userId+","+pwd;
