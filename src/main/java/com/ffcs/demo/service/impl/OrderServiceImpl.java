@@ -2,13 +2,17 @@ package com.ffcs.demo.service.impl;
 
 import com.ffcs.demo.dao.mapper.OrderGoodsMapper;
 import com.ffcs.demo.dao.mapper.OrderMapper;
+import com.ffcs.demo.entity.DayOrderStatistics;
 import com.ffcs.demo.entity.Order;
 import com.ffcs.demo.entity.OrderGoods;
 import com.ffcs.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService{
@@ -71,5 +75,12 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public List<Order> getByBuyerId(int buyerId) {
         return orderInfoMapper.getByBuyerId();
+    }
+
+    public  List<DayOrderStatistics>  getOrderStatisticsByDate(String date){return  orderInfoMapper.orderStatisticsByDate(date);}
+
+    @Override
+    public List<Order> getAllFinished() {
+        return orderInfoMapper.getAllFinished();
     }
 }

@@ -33,4 +33,8 @@ public class GoodsInfoService {
     public List<Goods> getPageALL() {
         return goodsMapper.selectALL();
     }
+
+    public List<Goods> getPageALLNormal() {
+        return goodsMapper.selectALLNormal();
+    }
 }

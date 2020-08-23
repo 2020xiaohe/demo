@@ -1,23 +1,18 @@
 package com.ffcs.demo.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.ffcs.demo.constant.OperResult;
 import com.ffcs.demo.domain.AlipayBean;
-import com.ffcs.demo.entity.Cart;
-import com.ffcs.demo.entity.Goods;
-import com.ffcs.demo.entity.Order;
-import com.ffcs.demo.entity.OrderGoods;
+import com.ffcs.demo.entity.*;
 import com.ffcs.demo.req.AlipayReq;
 import com.ffcs.demo.req.OrderReq;
-import com.ffcs.demo.service.AlipayService;
-import com.ffcs.demo.service.CartService;
-import com.ffcs.demo.service.OrderGoodsService;
-import com.ffcs.demo.service.OrderService;
+import com.ffcs.demo.service.*;
+import com.ffcs.demo.utils.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +21,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +33,7 @@ import java.util.Map;
 @RequestMapping("/order")
 public class OrderController {
     private Logger logger = LoggerFactory.getLogger(OrderController.class);
-
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     @Autowired
     private AlipayService alipayService;
 
@@ -47,7 +45,6 @@ public class OrderController {
 
     @Autowired
     private OrderGoodsService orderGoodsService;
-
 
     @PostMapping("/alipay")//付款
     public String alipay(@RequestBody AlipayReq alipayReq) throws AlipayApiException {
@@ -69,24 +66,7 @@ public class OrderController {
         alipayBean.setSubject(alipayReq.getSubject());
         alipayBean.setTotal_amount(alipayReq.getTotal_amount());
         alipayBean.setBody(alipayReq.getBody());
-//        Gson gson = new Gson();
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        Map<String, Object> map2 = new HashMap<String, Object>();
-//        map = gson.fromJson(alipayService.refund(alipayBean), map.getClass());//关键
-//        map2=gson.fromJson((String) map.get("alipay_trade_refund_response"),map.getClass());
-//        String msg=(String) map2.get("msg");
-
-        Map map = JSON.parseObject(alipayService.refund(alipayBean),Map.class);
-        Map map2=JSON.parseObject( map.get("alipay_trade_refund_response").toString(),Map.class);
-        String msg= map2.get("msg").toString();
-        if(msg.equals("Success"))//退款成功 修改订单状态
-        {
-            Order order = new Order();
-            order.setOrderStatus(6);
-            order.setOrderNo(alipayReq.getOut_trade_no());
-            this.update(order);
-        }
-        return msg;
+        return alipayService.refund(alipayBean);
     }
 
     @PostMapping("/update")
@@ -185,6 +165,27 @@ public class OrderController {
         return json.toJSONString();
     }
 
+    /**
+     * 查询所有订单--分页--客户端
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/getPageAllFinishedOrderInfo")
+    @ResponseBody
+    public String getPageAllOrderClient(int pageNum, int pageSize) {
+        JSONObject json = new JSONObject();
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo<Order> pageInfo = new PageInfo<>(orderService.getAllFinished());
+        for (Order g : pageInfo.getList()) {
+            g.setStatusDesc("完成");
+        }
+        json.put("ordersInfo", pageInfo);
+        json.put(OperResult.OPERATION_RESULT_KEY, OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        return json.toJSONString();
+    }
+
     @GetMapping("/getOrderGoods")
     @ResponseBody
     public String getOrderGoods(int orderNo) {
@@ -238,6 +239,18 @@ public class OrderController {
             }
         }
         json.put("ordersInfo", pageInfo);
+        json.put(OperResult.OPERATION_RESULT_KEY, OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        return json.toJSONString();
+    }
+
+    @GetMapping("/orderStatisticsByDate")
+    public String orderStatisticsByDate(String time) throws Exception {
+        JSONObject json = new JSONObject();
+//        String str = DateUtil.getDateString(time , DateUtil.DATE_FORMAT);
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+//        Date date = simpleDateFormat.parse(time);
+        List<DayOrderStatistics>  dayOrderStatistics=orderService.getOrderStatisticsByDate(time);
+        json.put("dayOrderStatistics", dayOrderStatistics);
         json.put(OperResult.OPERATION_RESULT_KEY, OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
         return json.toJSONString();
     }

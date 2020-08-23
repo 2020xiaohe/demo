@@ -177,4 +177,7 @@
   <select id="selectALL" resultMap="BaseResultMap">
     select * from goods_info
   </select>
+  <select id="selectALLNormal" resultMap="BaseResultMap">
+    select * from goods_info where status=1
+  </select>
 </mapper>

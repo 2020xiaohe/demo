@@ -1,6 +1,8 @@
 package com.ffcs.demo.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.ffcs.demo.constant.OperResult;
 import com.ffcs.demo.domain.GoodsInfo;
 import com.ffcs.demo.entity.Goods;
@@ -12,10 +14,16 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -34,6 +42,17 @@ public class GoodsInfoController {
 
     @Autowired
     private GoodsInfoService goodsInfoService;
+
+
+    @PostMapping(value = "/uploadPic")
+    @ResponseBody
+    public String uploadPic(MultipartFile file) throws Exception {
+        String result = "";
+        result = PicUtils.singleFileUpload(file);
+        return  result;
+    }
+
+
 
     /**
      * 根据文件名获取图片
@@ -57,13 +76,11 @@ public class GoodsInfoController {
      * @return  保存成功/保存失败
      */
     @PostMapping("/addGoodsInfo")
-    public String addGoodsInfo(MultipartFile pic, GoodsInfo goodsInfo) {
+    public String addGoodsInfo(MultipartFile pic, GoodsInfo goodsInfo, HttpSession session) {
         JSONObject json= new JSONObject();
         String result = "";
         try {
-
-            result = PicUtils.singleFileUpload(pic);
-            goodsInfo.setPicPath(result);
+            goodsInfo.setOperId((Integer) session.getAttribute("userId"));
             goodsInfo.setStatus(1);
             goodsInfo.setOperDate(new Date());
             goodsInfoService.getGoodsInfoDao().save(goodsInfo);
@@ -77,16 +94,31 @@ public class GoodsInfoController {
     }
 
     /**
+     * 根据商品id删除商品信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/delGoodsInfoById")
+    public String delGoodsInfoById(Integer id){
+        JSONObject json= new JSONObject();
+        goodsInfoService.getGoodsInfoDao().deleteById(id);
+        String result = OperResult.OPERATION_RESULT_DELETE_SUCCESS;
+        json.put(OperResult.OPERATION_RESULT_KEY,result);
+        return  json.toString();
+    }
+
+    /**
      * 商品管理---商品状态管理
      * @param id  商品id
      * @param goodsStatus  商品状态修改为 1---正常 2---缺货 3---下架
      * @return
      */
     @GetMapping("/operGoodsInfoStatus")
-    public String operGoodsInfoStatus(Integer id, Integer goodsStatus){
+    public String operGoodsInfoStatus(Integer id, Integer goodsStatus,HttpSession session){
         JSONObject json= new JSONObject();
         GoodsInfo goodsInfo = goodsInfoService.getGoodsInfoDao().getOne(id);
         goodsInfo.setStatus(goodsStatus);
+        goodsInfo.setOperId((Integer) session.getAttribute("userId"));
         goodsInfoService.getGoodsInfoDao().save(goodsInfo);
         json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_UPDATE_SUCCESS);
         return  json.toString();
@@ -110,10 +142,14 @@ public class GoodsInfoController {
      * @return
      */
     @GetMapping("/getAllGoodsInfo")
-    public String  getAll(){
+    public String  getAllGoodsInfo(int pageNum, int pageSize){
         JSONObject json= new JSONObject();
-        List<GoodsInfo> list = goodsInfoService.getGoodsInfoDao().findAll();
-        for (GoodsInfo g:list ) {
+//        List<GoodsInfo> goodsInfos = goodsInfoService.getGoodsInfoDao().findAll();
+        PagingAndSortingRepository<GoodsInfo, Integer> repository = goodsInfoService.getGoodsInfoDao();
+//        Sort sort = Sort.by(Sort.Direction.DESC,"operDate");
+        Pageable pageable = PageRequest.of(pageNum,pageSize);
+        Page<GoodsInfo> pageInfo  = repository.findAll(pageable);
+        for (GoodsInfo g: pageInfo.getContent() ) {
             if (g.getStatus() == 1){
                 g.setStatusDesc("正常");
             }else if (g.getStatus() == 2){
@@ -122,9 +158,9 @@ public class GoodsInfoController {
                 g.setStatusDesc("下架");
             }
         }
-        json.put("goodsInfo",list);
+        json.put("goodsInfo",pageInfo);
         json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
-        return  json.toString();
+        return JSON.toJSONString(json, SerializerFeature.DisableCircularReferenceDetect);
     }
 
     /**
@@ -137,6 +173,30 @@ public class GoodsInfoController {
         JSONObject json= new JSONObject();
         PageHelper.startPage(pageNum,pageSize);
         PageInfo<Goods> pageInfo = new PageInfo<>(goodsInfoService.getPageALL());
+        for (Goods g : pageInfo.getList() ) {
+            if (g.getStatus() == 1){
+                g.setStatusDesc("正常");
+            }else if (g.getStatus() == 2){
+                g.setStatusDesc("缺货");
+            }else {
+                g.setStatusDesc("下架");
+            }
+        }
+        json.put("goodsInfo",pageInfo);
+        json.put(OperResult.OPERATION_RESULT_KEY,OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
+        return  json.toString();
+    }
+
+    /**
+     * 商品管理---获取所有正常商品--分页
+     * zhuwb 20200808
+     * @return
+     */
+    @GetMapping("/getPageAllNormalGoodsInfo")
+    public String  getPageAllNormalGoodsInfo(int pageNum, int pageSize){
+        JSONObject json= new JSONObject();
+        PageHelper.startPage(pageNum,pageSize);
+        PageInfo<Goods> pageInfo = new PageInfo<>(goodsInfoService.getPageALLNormal());
         for (Goods g : pageInfo.getList() ) {
             if (g.getStatus() == 1){
                 g.setStatusDesc("正常");

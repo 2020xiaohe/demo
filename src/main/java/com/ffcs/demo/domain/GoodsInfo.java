@@ -1,5 +1,6 @@
 package com.ffcs.demo.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -17,7 +18,7 @@ public class GoodsInfo implements Serializable {
     private static final long serialVersionUID = -8790219123224176064L;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "goods_id")
     private Integer id;
 
@@ -60,7 +61,15 @@ public class GoodsInfo implements Serializable {
     @ManyToOne( cascade = CascadeType.REFRESH)
     @JoinColumn(name = "goods_type",referencedColumnName="type_id" ,insertable = false, updatable = false)
     @NotFound(action= NotFoundAction.IGNORE)
+    @JSONField(serialize = true)
     private GoodsType goodsType;
+
+
+    @ManyToOne( cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "opr_id",referencedColumnName="user_id" ,insertable = false, updatable = false)
+    @NotFound(action= NotFoundAction.IGNORE)
+    @JSONField(serialize = true)
+    private UserInfo goodsInfoOperUser;
 
     public Integer getId() {
         return id;
@@ -172,6 +181,14 @@ public class GoodsInfo implements Serializable {
 
     public void setGoodsType(GoodsType goodsType) {
         this.goodsType = goodsType;
+    }
+
+    public UserInfo getGoodsInfoOperUser() {
+        return goodsInfoOperUser;
+    }
+
+    public void setGoodsInfoOperUser(UserInfo goodsInfoOperUser) {
+        this.goodsInfoOperUser = goodsInfoOperUser;
     }
 
     @Override

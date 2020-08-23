@@ -1,5 +1,8 @@
 package com.ffcs.demo.domain;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +17,7 @@ public class GoodsType implements Serializable {
     private static final long serialVersionUID = 372937498845022449L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "type_id")
     private Integer id;
 
@@ -26,6 +29,11 @@ public class GoodsType implements Serializable {
 
     @Column(name = "opr_date")
     private Date operDate;
+
+    @ManyToOne( cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "opr_id",referencedColumnName="user_id" ,insertable = false, updatable = false)
+    @NotFound(action= NotFoundAction.IGNORE)
+    private UserInfo goodTypeOperUser;
 
     public Integer getId() {
         return id;
@@ -57,5 +65,13 @@ public class GoodsType implements Serializable {
 
     public void setOperDate(Date operDate) {
         this.operDate = operDate;
+    }
+
+    public UserInfo getGoodTypeOperUser() {
+        return goodTypeOperUser;
+    }
+
+    public void setGoodTypeOperUser(UserInfo goodTypeOperUser) {
+        this.goodTypeOperUser = goodTypeOperUser;
     }
 }
