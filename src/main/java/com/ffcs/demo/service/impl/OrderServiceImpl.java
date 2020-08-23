@@ -77,7 +77,7 @@ public class OrderServiceImpl implements OrderService{
         return orderInfoMapper.getByBuyerId();
     }
 
-    public  List<DayOrderStatistics>  getOrderStatisticsByDate(Date date){return  orderInfoMapper.orderStatisticsByDate(date);}
+    public  List<DayOrderStatistics>  getOrderStatisticsByDate(String date){return  orderInfoMapper.orderStatisticsByDate(date);}
 
     @Override
     public List<Order> getAllFinished() {

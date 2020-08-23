@@ -23,7 +23,7 @@ public interface OrderService {
 
     public  List<Order> getByBuyerId(int buyerId);
 
-    List<DayOrderStatistics>  getOrderStatisticsByDate(Date date);
+    List<DayOrderStatistics>  getOrderStatisticsByDate(String date);
 
     public  List<Order> getAllFinished();
 }

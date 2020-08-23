@@ -8,9 +8,11 @@ import com.ffcs.demo.entity.*;
 import com.ffcs.demo.req.AlipayReq;
 import com.ffcs.demo.req.OrderReq;
 import com.ffcs.demo.service.*;
+import com.ffcs.demo.utils.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -241,9 +244,12 @@ public class OrderController {
     }
 
     @GetMapping("/orderStatisticsByDate")
-    public String orderStatisticsByDate(Date date) throws Exception {
+    public String orderStatisticsByDate(String time) throws Exception {
         JSONObject json = new JSONObject();
-        List<DayOrderStatistics>  dayOrderStatistics=orderService.getOrderStatisticsByDate(date);
+//        String str = DateUtil.getDateString(time , DateUtil.DATE_FORMAT);
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");//注意月份是MM
+//        Date date = simpleDateFormat.parse(time);
+        List<DayOrderStatistics>  dayOrderStatistics=orderService.getOrderStatisticsByDate(time);
         json.put("dayOrderStatistics", dayOrderStatistics);
         json.put(OperResult.OPERATION_RESULT_KEY, OperResult.OPERATION_RESULT_SEARCH_SUCCESS);
         return json.toJSONString();
