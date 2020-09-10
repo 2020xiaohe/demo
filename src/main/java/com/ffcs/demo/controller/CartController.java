@@ -3,11 +3,14 @@ package com.ffcs.demo.controller;
 import com.ffcs.demo.entity.Cart;
 import com.ffcs.demo.req.CartReq;
 import com.ffcs.demo.service.CartService;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +39,9 @@ public class CartController {
      * @return
      */
     @PostMapping("/add")
-    public int add(@RequestBody Cart cart) {
+    public int add(@RequestBody Cart cart, HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
         return cartService.add(cart);
     }
 
@@ -47,7 +52,9 @@ public class CartController {
      * @return
      */
     @PostMapping("/update")
-    public int update( @RequestBody CartReq cartReq) {
+    public int update( @RequestBody CartReq cartReq, HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
         return cartService.update(cartReq);
     }
 
@@ -59,7 +66,9 @@ public class CartController {
      */
 
     @RequestMapping("/del/{cartId}")
-    public int delete(@PathVariable Integer cartId) {
+    public int delete(@PathVariable Integer cartId, HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
         return cartService.del(cartId);
     }
 }
