@@ -13,6 +13,7 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="credit" property="credit" jdbcType="INTEGER" />
     <result column="headPic" property="headpic" jdbcType="VARCHAR" />
+    <result column="manage" property="manage" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     user_id, user_code, user_name, user_sex, user_login_name, user_pwd, status, address, 

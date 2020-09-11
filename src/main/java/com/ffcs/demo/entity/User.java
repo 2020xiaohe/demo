@@ -23,6 +23,8 @@ public class User {
 
     private String headpic;
 
+    private Integer manage;
+
     public Integer getUserId() {
         return userId;
     }
@@ -109,5 +111,13 @@ public class User {
 
     public void setHeadpic(String headpic) {
         this.headpic = headpic == null ? null : headpic.trim();
+    }
+
+    public Integer getManage() {
+        return manage;
+    }
+
+    public void setManage(Integer manage) {
+        this.manage = manage;
     }
 }

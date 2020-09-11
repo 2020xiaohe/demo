@@ -84,6 +84,9 @@ public class LoginSignController {
                     userCookie.setPath("/");
                     response.addCookie(userCookie);
                     }
+                    if (user.getManage()!=null){
+                        result.put("isManege",user.getManage());
+                    }
                     result.put("resultMessage","登陆成功");
                     result.put("resultCode",1);
                     result.put("userId",user.getUserId());
