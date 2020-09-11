@@ -74,7 +74,7 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public List<Order> getByBuyerId(int buyerId) {
-        List<Order> list = orderInfoMapper.getByBuyerId();
+        List<Order> list = orderInfoMapper.getByBuyerId(buyerId);
         return list;
     }
 
