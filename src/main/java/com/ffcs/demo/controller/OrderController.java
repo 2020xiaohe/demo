@@ -154,10 +154,7 @@ public class OrderController {
                     g.setStatusDesc("退款失败");
                     break;
                 }
-                case 6: {
-                    g.setStatusDesc("退款完成");
-                    break;
-                }
+
             }
         }
         json.put("ordersInfo", pageInfo);
@@ -232,10 +229,7 @@ public class OrderController {
                     g.setStatusDesc("退款失败");
                     break;
                 }
-                case 6: {
-                    g.setStatusDesc("退款完成");
-                    break;
-                }
+
             }
         }
         json.put("ordersInfo", pageInfo);

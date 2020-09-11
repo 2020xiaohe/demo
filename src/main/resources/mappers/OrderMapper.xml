@@ -163,6 +163,8 @@
   <select id="getByBuyerId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select *
     from order_info
-    where buyer_id = #{buyerId,jdbcType=INTEGER} order by create_time
+    where buyer_id = #{buyerId,jdbcType=INTEGER}
+    and order_status != 6
+    order by create_time desc
   </select>
 </mapper>
