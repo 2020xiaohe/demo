@@ -2,6 +2,7 @@ package com.ffcs.demo.service.impl;
 
 import com.ffcs.demo.dao.mapper.OrderGoodsMapper;
 import com.ffcs.demo.dao.mapper.OrderMapper;
+import com.ffcs.demo.entity.BuyerOrder;
 import com.ffcs.demo.entity.DayOrderStatistics;
 import com.ffcs.demo.entity.Order;
 import com.ffcs.demo.entity.OrderGoods;
@@ -73,8 +74,8 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<Order> getByBuyerId(int buyerId) {
-        List<Order> list = orderInfoMapper.getByBuyerId(buyerId);
+    public List<BuyerOrder> getByBuyerId(int buyerId) {
+        List<BuyerOrder> list = orderInfoMapper.getByBuyerId(buyerId);
         return list;
     }
 

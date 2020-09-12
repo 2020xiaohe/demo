@@ -160,12 +160,4 @@
     select * from order_info where order_status = 3 order by create_time
   </select>
 
-  <select id="getByBuyerId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-    select *
-    from order_info
-    where buyer_id = #{buyerId,jdbcType=INTEGER}
-    and order_status != 6
-    and order_status != 0
-    order by create_time desc
-  </select>
 </mapper>

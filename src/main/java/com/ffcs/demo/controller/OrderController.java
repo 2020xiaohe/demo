@@ -206,8 +206,8 @@ public class OrderController {
     public String getPageOrderByBuyerId(int pageNum, int pageSize, int buyerId) {
         JSONObject json = new JSONObject();
         PageHelper.startPage(pageNum, pageSize);
-        PageInfo<Order> pageInfo = new PageInfo<>(orderService.getByBuyerId(buyerId));
-        for (Order g : pageInfo.getList()) {
+        PageInfo<BuyerOrder> pageInfo = new PageInfo<>(orderService.getByBuyerId(buyerId));
+        for (BuyerOrder g : pageInfo.getList()) {
             switch (g.getOrderStatus()) {
                 case 1: {
                     g.setStatusDesc("进行中");
